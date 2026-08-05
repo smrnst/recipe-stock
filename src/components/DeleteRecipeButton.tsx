@@ -27,7 +27,7 @@ export function DeleteRecipeButton({ id }: { id: number }) {
       type="button"
       onClick={handleDelete}
       disabled={deleting}
-      className="text-sm text-danger bg-danger-light border border-danger/30 px-3 py-1.5 rounded-sm hover:bg-danger hover:text-paper transition-colors disabled:opacity-50"
+      className="inline-flex items-center font-body text-sm text-danger bg-danger-light border border-danger/30 px-3 py-1.5 rounded-sm hover:bg-danger hover:text-paper transition-colors disabled:opacity-50"
     >
       {deleting ? "削除中..." : "削除する"}
     </button>

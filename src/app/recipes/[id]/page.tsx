@@ -24,7 +24,7 @@ export default async function RecipeDetailPage({ params }: Params) {
         <div className="flex gap-2">
           <Link
             href={`/recipes/${recipe.id}/edit`}
-            className="text-sm text-paper bg-ink px-3 py-1.5 rounded-sm hover:brightness-110"
+            className="inline-flex items-center text-sm text-paper bg-ink border border-transparent px-3 py-1.5 rounded-sm hover:brightness-110"
           >
             編集する
           </Link>

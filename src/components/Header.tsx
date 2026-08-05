@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { DEFAULT_CATEGORIES } from "@/lib/categories";
-import { CategoryMenu } from "./CategoryMenu";
-import { LogoutButton } from "./LogoutButton";
+import { CategoryMenu } from "@/components/CategoryMenu";
 import Link from "next/link";
 
 export async function Header() {
@@ -11,7 +10,7 @@ export async function Header() {
   });
 
   const categories = Array.from(
-    new Set([...DEFAULT_CATEGORIES, ...dbCategories.map((c) => c.category)]),
+    new Set([...DEFAULT_CATEGORIES, ...dbCategories.map((c) => c.category)])
   );
 
   return (
@@ -23,13 +22,13 @@ export async function Header() {
             おいしかったレシピ帳
           </Link>
         </div>
+
         <Link
           href="/recipes/new"
           className="text-xs font-mono bg-paper text-ink px-3 py-2 rounded-sm hover:brightness-95 transition"
         >
           + 追加する
         </Link>
-        <LogoutButton />
       </div>
     </header>
   );
