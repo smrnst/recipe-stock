@@ -16,9 +16,18 @@ export default async function RecipeDetailPage({ params }: Params) {
 
   return (
     <article>
-      <span className="tab-link inline-block text-herb bg-herb-light px-2 py-0.5 rounded-sm">
-        {recipe.category}
-      </span>
+      <div className="flex items-center justify-between">
+        <span className="tab-link inline-block text-herb bg-herb-light px-2 py-0.5 rounded-sm">
+          {recipe.category}
+        </span>
+        <Link
+          href={`/recipes/${recipe.id}/edit`}
+          className="text-sm text-ink-soft border border-line px-3 py-1.5 rounded-sm hover:bg-herb-light"
+        >
+          編集する
+        </Link>
+      </div>
+
       <h1 className="font-display text-3xl font-semibold text-ink mt-2">
         {recipe.title}
       </h1>

@@ -1,26 +1,46 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
-export default function NewRecipePage() {
+type Recipe = {
+  id: number;
+  title: string;
+  url: string;
+  content: string;
+  category: string;
+  ingredients: { id: number; name: string }[];
+};
+
+export default function EditRecipePage() {
+  const { id } = useParams<{ id: string }>();
   const router = useRouter();
+
+  const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState<string[]>([]);
   const [category, setCategory] = useState("");
   const [customCategory, setCustomCategory] = useState("");
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
+  const [content, setContent] = useState("");
   const [ingredientsText, setIngredientsText] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    fetch("/api/categories")
-      .then((res) => res.json())
-      .then((data) => {
-        setCategories(data.categories);
-        if (data.categories.length > 0) setCategory(data.categories[0]);
-      });
-  }, []);
+    Promise.all([
+      fetch(`/api/recipes/${id}`).then((res) => res.json()),
+      fetch("/api/categories").then((res) => res.json()),
+    ]).then(([recipeData, categoryData]) => {
+      const recipe: Recipe = recipeData.recipe;
+      setTitle(recipe.title);
+      setUrl(recipe.url);
+      setContent(recipe.content);
+      setCategory(recipe.category);
+      setIngredientsText(recipe.ingredients.map((i) => i.name).join(", "));
+      setCategories(categoryData.categories);
+      setLoading(false);
+    });
+  }, [id]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -32,12 +52,13 @@ export default function NewRecipePage() {
       .map((s) => s.trim())
       .filter(Boolean);
 
-    const res = await fetch("/api/recipes", {
-      method: "POST",
+    const res = await fetch(`/api/recipes/${id}`, {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         title,
         url,
+        content,
         category: finalCategory,
         ingredients,
       }),
@@ -46,16 +67,27 @@ export default function NewRecipePage() {
     setSubmitting(false);
 
     if (res.ok) {
-      const data = await res.json();
-      router.push(`/recipes/${data.recipe.id}`);
+      router.push(`/recipes/${id}`);
     } else {
-      alert("登録に失敗しました");
+      alert("更新に失敗しました");
     }
   }
 
+  async function handleDelete() {
+    if (!confirm("このレシピを削除しますか?")) return;
+    const res = await fetch(`/api/recipes/${id}`, { method: "DELETE" });
+    if (res.ok) {
+      router.push("/");
+    } else {
+      alert("削除に失敗しました");
+    }
+  }
+
+  if (loading) return <p className="text-ink-soft">読み込み中...</p>;
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4 max-w-lg">
-      <h1 className="font-display text-xl font-semibold">レシピを登録</h1>
+      <h1 className="font-display text-xl font-semibold">レシピを編集</h1>
 
       <div>
         <label className="tab-link text-ink-soft block mb-1">タイトル</label>
@@ -108,22 +140,37 @@ export default function NewRecipePage() {
         <textarea
           value={ingredientsText}
           onChange={(e) => setIngredientsText(e.target.value)}
-          placeholder="卵, 砂糖, 醤油"
           className="border border-line bg-card rounded-sm px-3 py-2 w-full h-20"
         />
       </div>
 
-      <p className="text-sm text-ink-soft bg-herb-light rounded-sm p-3">
-        登録時にURLから自動で手順を取得します。取得できなかった場合は空欄になります(後から編集できます)。
-      </p>
+      <div>
+        <label className="tab-link text-ink-soft block mb-1">
+          メモ・作り方
+        </label>
+        <textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          className="border border-line bg-card rounded-sm px-3 py-2 w-full h-40"
+        />
+      </div>
 
-      <button
-        type="submit"
-        disabled={submitting}
-        className="bg-ink text-paper px-4 py-2 rounded-sm disabled:opacity-50"
-      >
-        {submitting ? "登録中..." : "登録する"}
-      </button>
+      <div className="flex gap-2">
+        <button
+          type="submit"
+          disabled={submitting}
+          className="bg-ink text-paper px-4 py-2 rounded-sm disabled:opacity-50"
+        >
+          {submitting ? "更新中..." : "更新する"}
+        </button>
+        <button
+          type="button"
+          onClick={handleDelete}
+          className="text-sm text-ink-soft border border-line px-4 py-2 rounded-sm hover:bg-herb-light"
+        >
+          削除する
+        </button>
+      </div>
     </form>
   );
 }

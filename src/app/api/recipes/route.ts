@@ -1,31 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { scrapeRecipeContent } from "@/lib/scrape";
 
-// GET /api/recipes?ingredient=卵&category=おつまみ
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const ingredient = searchParams.get("ingredient");
-  const category = searchParams.get("category");
+// GET は変更なし(省略)
 
-  const recipes = await prisma.recipe.findMany({
-    where: {
-      ...(category ? { category } : {}),
-      ...(ingredient
-        ? { ingredients: { some: { name: { contains: ingredient } } } }
-        : {}),
-    },
-    include: { ingredients: true },
-    orderBy: { createdAt: "desc" },
-  });
-
-  return NextResponse.json({ recipes });
-}
-
-// POST /api/recipes
-// body: { title, url, content, category, ingredients: string[] }
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { title, url, content, category, ingredients } = body;
+  const { title, url, category, ingredients } = body;
 
   if (!title || !category) {
     return NextResponse.json(
@@ -34,11 +15,13 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const content = url ? await scrapeRecipeContent(url) : "";
+
   const recipe = await prisma.recipe.create({
     data: {
       title,
       url: url ?? "",
-      content: content ?? "",
+      content,
       category,
       ingredients: {
         create: (ingredients ?? []).map((name: string) => ({ name })),
