@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { DEFAULT_CATEGORIES } from "@/lib/categories";
-import { CategoryMenu } from "@/components/CategoryMenu";
+import { CategoryMenu } from "./CategoryMenu";
+import { LogoutButton } from "./LogoutButton";
 import Link from "next/link";
 
 export async function Header() {
@@ -28,6 +29,7 @@ export async function Header() {
         >
           + 追加する
         </Link>
+        <LogoutButton />
       </div>
     </header>
   );
