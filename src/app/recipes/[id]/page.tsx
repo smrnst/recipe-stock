@@ -1,6 +1,7 @@
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import { DeleteRecipeButton } from "@/components/DeleteRecipeButton";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -20,19 +21,20 @@ export default async function RecipeDetailPage({ params }: Params) {
         <span className="tab-link inline-block text-herb bg-herb-light px-2 py-0.5 rounded-sm">
           {recipe.category}
         </span>
-        <Link
-          href={`/recipes/${recipe.id}/edit`}
-          className="text-sm text-ink-soft border border-line px-3 py-1.5 rounded-sm hover:bg-herb-light"
-        >
-          編集する
-        </Link>
+        <div className="flex gap-2">
+          <Link
+            href={`/recipes/${recipe.id}/edit`}
+            className="text-sm text-paper bg-ink px-3 py-1.5 rounded-sm hover:brightness-110"
+          >
+            編集する
+          </Link>
+          <DeleteRecipeButton id={recipe.id} />
+        </div>
       </div>
 
       <h1 className="font-display text-3xl font-semibold text-ink mt-2">
         {recipe.title}
       </h1>
-      <h1 className="text-2xl font-bold mt-1">{recipe.title}</h1>
-
       {recipe.url && (
         <Link
           href={recipe.url}

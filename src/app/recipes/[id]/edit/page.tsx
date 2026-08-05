@@ -73,16 +73,6 @@ export default function EditRecipePage() {
     }
   }
 
-  async function handleDelete() {
-    if (!confirm("このレシピを削除しますか?")) return;
-    const res = await fetch(`/api/recipes/${id}`, { method: "DELETE" });
-    if (res.ok) {
-      router.push("/");
-    } else {
-      alert("削除に失敗しました");
-    }
-  }
-
   if (loading) return <p className="text-ink-soft">読み込み中...</p>;
 
   return (
@@ -162,13 +152,6 @@ export default function EditRecipePage() {
           className="bg-ink text-paper px-4 py-2 rounded-sm disabled:opacity-50"
         >
           {submitting ? "更新中..." : "更新する"}
-        </button>
-        <button
-          type="button"
-          onClick={handleDelete}
-          className="text-sm text-ink-soft border border-line px-4 py-2 rounded-sm hover:bg-herb-light"
-        >
-          削除する
         </button>
       </div>
     </form>

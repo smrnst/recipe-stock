@@ -9,6 +9,8 @@
   --color-herb-light: #EDF1E8;
   --color-mustard: #C98A2C;
   --color-line: #DCD4C0;
+  --color-danger: #B5533F;
+  --color-danger-light: #F5E7E3;
 
   --font-display: var(--font-display), serif;
   --font-body: var(--font-body), sans-serif;

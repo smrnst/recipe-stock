@@ -10,19 +10,33 @@ type Recipe = {
 
 export function RecipeCard({ recipe }: { recipe: Recipe }) {
   return (
-    <Link
-      href={`/recipes/${recipe.id}`}
-      className="recipe-card block p-5 pt-6 hover:shadow-md hover:border-herb transition-shadow"
-    >
-      <span className="tab-link inline-block text-herb bg-herb-light px-2 py-0.5 rounded-sm mb-2">
+    <div className="recipe-card block p-5 pt-6">
+      <Link
+        href={`/category/${encodeURIComponent(recipe.category)}`}
+        className="tab-link inline-block text-herb bg-herb-light px-2 py-0.5 rounded-sm mb-2 hover:underline"
+      >
         {recipe.category}
-      </span>
+      </Link>
+
       <h3 className="font-display text-lg font-semibold text-ink">
-        {recipe.title}
+        <Link href={`/recipes/${recipe.id}`} className="hover:underline">
+          {recipe.title}
+        </Link>
       </h3>
+
       <p className="text-sm text-ink-soft mt-2 font-mono">
-        {recipe.ingredients.map((i) => i.name).join(" · ")}
+        {recipe.ingredients.map((ingredient, i) => (
+          <span key={ingredient.id}>
+            <Link
+              href={`/?ingredient=${encodeURIComponent(ingredient.name)}`}
+              className="hover:underline"
+            >
+              {ingredient.name}
+            </Link>
+            {i < recipe.ingredients.length - 1 && " · "}
+          </span>
+        ))}
       </p>
-    </Link>
+    </div>
   );
 }

@@ -10,7 +10,7 @@ export async function Header() {
   });
 
   const categories = Array.from(
-    new Set([...DEFAULT_CATEGORIES, ...dbCategories.map((c) => c.category)])
+    new Set([...DEFAULT_CATEGORIES, ...dbCategories.map((c) => c.category)]),
   );
 
   return (
@@ -24,7 +24,7 @@ export async function Header() {
         </div>
         <Link
           href="/recipes/new"
-          className="text-xs font-mono bg-mustard text-ink px-3 py-2 rounded-sm hover:brightness-95 transition"
+          className="text-xs font-mono bg-paper text-ink px-3 py-2 rounded-sm hover:brightness-95 transition"
         >
           + 追加する
         </Link>
