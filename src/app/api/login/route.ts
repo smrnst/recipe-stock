@@ -5,7 +5,10 @@ export async function POST(req: NextRequest) {
   const { password } = await req.json();
 
   if (password !== process.env.AUTH_PASSWORD) {
-    return NextResponse.json({ error: "パスワードが違います" }, { status: 401 });
+    return NextResponse.json(
+      { error: "パスワードが違います" },
+      { status: 401 }
+    );
   }
 
   const res = NextResponse.json({ ok: true });

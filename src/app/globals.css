@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #FBF8F2;
-  --color-card: #FFFDF9;
-  --color-ink: #2B2A28;
-  --color-ink-soft: #6B675E;
-  --color-herb: #55684C;
-  --color-herb-light: #EDF1E8;
-  --color-mustard: #C98A2C;
-  --color-line: #DCD4C0;
-  --color-danger: #B5533F;
-  --color-danger-light: #F5E7E3;
+  --color-paper: #fbf8f2;
+  --color-card: #fffdf9;
+  --color-ink: #2b2a28;
+  --color-ink-soft: #6b675e;
+  --color-herb: #55684c;
+  --color-herb-light: #edf1e8;
+  --color-mustard: #c98a2c;
+  --color-line: #dcd4c0;
+  --color-danger: #b5533f;
+  --color-danger-light: #f5e7e3;
 
   --font-display: var(--font-display), serif;
   --font-body: var(--font-body), sans-serif;
@@ -19,12 +19,13 @@
 
 body {
   background-color: var(--color-paper);
-  background-image:
-    radial-gradient(var(--color-line) 0.5px, transparent 0.5px);
+  background-image: radial-gradient(var(--color-line) 0.5px, transparent 0.5px);
   background-size: 24px 24px;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: var(--font-display);
   letter-spacing: -0.01em;
 }

@@ -25,7 +25,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ja" className={`${fraunces.variable} ${inter.variable} ${plexMono.variable}`}>
+    <html
+      lang="ja"
+      className={`${fraunces.variable} ${inter.variable} ${plexMono.variable}`}
+    >
       <body className="min-h-full flex flex-col bg-paper text-ink font-body">
         <Header />
         <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-8">

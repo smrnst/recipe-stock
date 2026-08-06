@@ -54,7 +54,7 @@ function extractFromJsonLd($: cheerio.CheerioAPI): string {
         if (Array.isArray(instructions)) {
           const steps = instructions.map((step, i) => {
             const text =
-              typeof step === "string" ? step : step.text ?? step.name ?? "";
+              typeof step === "string" ? step : (step.text ?? step.name ?? "");
             return `${i + 1}. ${text}`.trim();
           });
           return steps.filter(Boolean).join("\n");
